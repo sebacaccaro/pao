@@ -45,7 +45,7 @@ public:
   void insertFront(const T&); //inserisce valore alla fine
   void insertBack(const T&); //Inserisce valore all'inizio
   //Operatori
-  //bool operator<(const dList<T>&) const; // Ordinamento lessicografico
+  bool operator<(const dList<T>&) const; // Ordinamento lessicografico
   T& operator[](iteratore) const; //overload per l'iteratore
   //Metodi per iteratore
   iteratore outOfBound() const;
@@ -155,11 +155,30 @@ typename dList<T>::iteratore dList<T>::end() const{
   return aux;
 }
 
+//Stampa una lista
 template<class T>
 void Print(std::ostream& os, const dList<T>& t) {
   typename dList<T>::iteratore it = t.begin();
   for(it; it != t.outOfBound(); ++it)
     os << t[it] << " ";
+}
+
+//Confronto lessicografico stile dizionario fra 2 liste
+template<class T>
+bool dList<T>::operator<(const dList<T>& t) const{
+  nodo *a = first;
+  nodo *b = t.first;
+  while (a && b && a->info == b->info) {
+    a = a->next;
+    b = b->next;
+  }
+  if (!a)
+    return true;
+  if (!b)
+    return false;
+  if (a->info < b->info)
+    return true;
+  return false;
 }
 
 //###############################

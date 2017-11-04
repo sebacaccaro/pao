@@ -1,12 +1,20 @@
 #include "DLList.h"
 #include <iostream>
 
+using std::cout;
+using std::endl;
 
 int main(){
-  dList<int> lA(5,9);
-  dList<int> lB(6,7);
+  dList<int> lA(5,7);
+  dList<int> lB(5,7);
   lA.insertBack(1);
-  lA.insertFront(18);
+  lB.insertBack(2);
+  cout << "Lista A --> ";
   Print(std::cout,lA);
-  std::cout << std::endl;
+  cout << endl;
+  cout << "Lista B --> ";
+  Print(std::cout,lB);
+  cout << endl;
+  cout << "lA < lB? -->" << (lA < lB)<<endl;
+  cout << "lB < lA? -->" << (lB < lA)<<endl;
 }
