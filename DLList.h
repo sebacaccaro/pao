@@ -1,6 +1,8 @@
 #ifndef DLList_H
 #define DLList_H
 
+#include <iostream>
+
 template<class T>
 class dList{
 friend class iteratore;
@@ -28,9 +30,12 @@ public:
     dList<T>::nodo* punt;
   public:
     bool operator==(iteratore) const;
+    bool operator!=(iteratore) const;
     iteratore& operator++();
     iteratore& operator--();
   };
+
+  static void Print(std::ostream& , const dList<T>&);
 
   //Costruttori
   dList(int, const T& ); // lista di k nodi tutti con valori k
@@ -40,10 +45,12 @@ public:
   void insertFront(const T&); //inserisce valore alla fine
   void insertBack(const T&); //Inserisce valore all'inizio
   //Operatori
-  bool operator<(const dList<T>&) const; // Ordinamento lessicografico
+  //bool operator<(const dList<T>&) const; // Ordinamento lessicografico
   T& operator[](iteratore) const; //overload per l'iteratore
   //Metodi per iteratore
   iteratore outOfBound() const;
+  iteratore begin() const;
+  iteratore end() const;
 };
 
 
@@ -53,6 +60,7 @@ public:
 //###############################
 
 //Costruttore nuovo nodo
+template<class T>
 dList<T>::nodo::nodo(const T& t, nodo* nPre, nodo* nNext): info(t), pre(nPre), next(nNext) {};
 
 //###############################
@@ -60,83 +68,131 @@ dList<T>::nodo::nodo(const T& t, nodo* nPre, nodo* nNext): info(t), pre(nPre), n
 //###############################
 
 //Costruttore di lista con k nodi identici di con info=T
+template<class T>
 dList<T>::dList(int k, const T& t){
   if (k == 0)
-    return dList<T>(0,0);
-
-  nodo* p = new nodo(T);
-  nodo* primo = p;
-  k--;
-  while(k > 0){
-    nodo* q = new nodo(T,p);
-    p->next = q;
-    p = q;
+    first = last = 0;
+  else{
+    nodo* p = new nodo(t);
+    nodo* primo = p;
     k--;
+    while(k > 0){
+      nodo* q = new nodo(t,p);
+      p->next = q;
+      p = q;
+      k--;
+    }
+    first = primo;
+    last = p;
   }
-  first = primo;
-  last = p;
 }
 
 //Ridefinisco il costruttore standard
-dList<T>::dList(nodo* f = 0, nodo* l = 0): first(f), last(l) {};
+template<class T>
+dList<T>::dList(nodo* f, nodo* l): first(f), last(l) {};
 
 //Controllo se una lista è vuota
+template<class T>
 bool dList<T>::isEmpty() const{
   return (first == 0);
 }
 
 //Inserimento di un valore a inizio lista
-void dList<T>::insertFront(const T&){
+template<class T>
+void dList<T>::insertFront(const T& t){
   if(!isEmpty()){
-    nodo* p = new nodo(T,0,first);
+    nodo* p = new nodo(t,0,first);
     first->pre = p;
     first = p;
   }
   else{
-    first = new nodo(T);
+    first = new nodo(t);
     last = first;
   }
 }
 
 //Inserimento di un valore a fine lista
-void dList<T>::insertBack(const T&){
+template<class T>
+void dList<T>::insertBack(const T& t){
   if(!isEmpty()){
-    nodo* p = new nodo(T,last,0);
+    nodo* p = new nodo(t,last,0);
     last->next = p;
     last = p;
   }
   else{
-    first = new nodo(T);
+    first = new nodo(t);
     last = first;
   }
 }
 
+//Overload dell'operatore parentesi quadre
+template<class T>
 T& dList<T>::operator[](iteratore it) const{
   return it.punt->info;
 }
-///MANCANO ANCORA DEI METODI!!!!!!!!
+
+//Iteratore quando eccedo a destra o a sinistra
+template<class T>
+typename dList<T>::iteratore dList<T>::outOfBound() const{
+  iteratore aux;
+  aux.punt = 0;
+  return aux;
+}
+
+//Iteratore che punta al primo elemento della lista
+template<class T>
+typename dList<T>::iteratore dList<T>::begin() const{
+  iteratore aux;
+  aux.punt = first;
+  return aux;
+}
+
+//Iteratore che punta all'ultimo elemento della lista
+template<class T>
+typename dList<T>::iteratore dList<T>::end() const{
+  iteratore aux;
+  aux.punt = last;
+  return aux;
+}
+
+template<class T>
+void Print(std::ostream& os, const dList<T>& t) {
+  typename dList<T>::iteratore it = t.begin();
+  for(it; it != t.outOfBound(); ++it)
+    os << t[it] << " ";
+}
 
 //###############################
 //#         ITERATORE           #
 //###############################
 
 //Overload del ++ prefisso
-dList<T>::iteratore& dList<T>::iteratore::operator++(){
+template<class T>
+typename dList<T>::iteratore& dList<T>::iteratore::operator++(){
   if (punt)
     punt = punt->next;
   return *this;
 }
 
 //Overload del -- prefisso
-dList<T>::iteratore& dList<T>::iteratore::operator--(){
+template<class T>
+typename dList<T>::iteratore& dList<T>::iteratore::operator--(){
   if (punt)
     punt = punt->pre;
   return *this;
 }
 
 //Overload dell'operatore booleano di ugualianza
-bool dList<T>::iteratore::operator==(iteratore) const{
-
+template<class T>
+bool dList<T>::iteratore::operator==(iteratore it) const{
+  return (punt == it.punt);
 }
+
+//Overload dell'operatore booleano di disuguaglianza
+template<class T>
+bool dList<T>::iteratore::operator!=(iteratore it) const{
+  return (punt != it.punt);
+}
+
 
 #endif
