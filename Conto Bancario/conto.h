@@ -37,6 +37,19 @@ public:
     double preleva(const double&);
 };
 
+class ContoArancio: public ContoDiRisparmio{
+private:
+    ContoCorrente& appoggio;
+public:
+    //Costruttori
+    ContoArancio(ContoCorrente&, const double& =0);
+
+    //Operazioni sul conto
+    double deposita(const double&);
+    double preleva(const double&);
+
+};
+
 
 
 
