@@ -11,3 +11,7 @@ double ContoBancario::preleva(const double& delta){
     saldo -= delta;
     return saldo;
 }
+
+double ContoBancario::getSaldo(){
+    return saldo;
+}

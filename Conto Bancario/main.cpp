@@ -6,11 +6,11 @@ using std::endl;
 using std::cin;
 
 int main(){
-    ContoCorrente c1;
-    ContoCorrente c2(20,2);
+    ContoDiRisparmio c1(30);
+    ContoDiRisparmio c2(20);
 
-    //cout << "Saldo c1: " << c1.deposita(0) << endl;
-    //cout << "Saldo c2: " << c2.deposita(0) << endl;
+    cout << "Saldo c1: " << c1.getSaldo() << endl;
+    cout << "Saldo c2: " << c2.getSaldo() << endl;
 
     cout << "Preleva su c1: ";
     double pre;

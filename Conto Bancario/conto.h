@@ -11,6 +11,9 @@ public:
     //Operazioni sul conto
     double deposita(const double&);
     double preleva(const double&);
+
+    //Gets
+    double getSaldo();
 };
 
 class ContoCorrente: public ContoBancario{
@@ -22,6 +25,15 @@ public:
 
     //Operazioni sul conto
     double deposita(const double&);
+    double preleva(const double&);
+};
+
+class ContoDiRisparmio: public ContoBancario{
+public:
+    //Costruttori
+    ContoDiRisparmio(const double& = 0.0);
+
+    //Operazioni sul conto
     double preleva(const double&);
 };
 
